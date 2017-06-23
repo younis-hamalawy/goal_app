@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  # before_action :require_same_user, only[:edit, :update]
+
   def new
     @user = User.new
   end
@@ -19,13 +21,18 @@ class UsersController < ApplicationController
   end
 
   def update
-
+    user = User.find(params[:id])
+    if user.update(user_params)
+      redirect_to user_url(user)
+    else
+      flash[:errors] = user.errors.full_messages
+      render :edit, status: 422
+    end
   end
 
   def show
+    @user = User.find(params[:id])
   end
-
-
 
   private
 
