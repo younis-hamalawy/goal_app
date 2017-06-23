@@ -15,26 +15,26 @@ RSpec.describe UsersController, type: :controller do
   describe "POST #create" do
     context "with valid information" do
       it "creates a new user" do
-        post :create, user: { username: "Tom", password: "password" }
-        expect(response).to render_template("show")
-        expect(response).to have_http_status(200)
+        post :create, params: { user: { username: "Tom", password: "password" } }
+        expect(response).to redirect_to(user_url(User.find_by_username("Tom")))
+        expect(response).to have_http_status(:redirect)
       end
     end
 
     context "with no password" do
       it "should stay on the new user page and show error" do
-        post :create, user: { username: "Tom", password: "" }
+        post :create, params: { user: { username: "Tom", password: "" } }
         expect(response).to render_template("new")
-        expect(response).to have_http_status(:error)
+        expect(response).to have_http_status(422)
         expect(page).to have_content("Password can't be blank")
       end
     end
 
     context "with no username" do
       it "should stay on the new user page and show error" do
-        post :create, user: { username: "", password: "password" }
+        post :create, params: { user: { username: "", password: "password" } }
         expect(response).to render_template("new")
-        expect(response).to have_http_status(:error)
+        expect(response).to have_http_status(422)
         expect(page).to have_content("Username can't be blank")
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe "GET #edit" do
     it "renders the edit page" do
-      get :edit, id: user.id
+      get :edit, params: { id: user.id }
       expect(response).to render_template("edit")
       expect(response).to have_http_status(200)
     end
@@ -51,17 +51,17 @@ RSpec.describe UsersController, type: :controller do
   describe "PATCH #update" do
     context "with valid information" do
       it "updates the users information" do
-        patch :update, id: user.id, user: { username: "Tom", password: "password" }
-        expect(response).to render_template("show")
+        patch :update, params: { id: user.id, user: { username: "Tom", password: "password" } }
+        expect(response).to redirect_to("show")
         expect(response).to have_http_status(200)
       end
     end
 
     context "with invalid information" do
       it "stays on edit page and shows error" do
-        patch :update, id: user.id, user: { username: "Tom", password: "" }
+        patch :update, params: { id: user.id, user: { username: "Tom", password: "" } }
         expect(response).to render_template("edit")
-        expect(response).to have_http_status(:error)
+        expect(response).to have_http_status(422)
         expect(page).to have_content("Password can't be blank")
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe "GET #show" do
     it "renders the user page" do
-      get :show, id: user.id
+      get :show, params: { id: user.id }
       expect(response).to render_template("show")
       expect(response).to have_http_status(200)
       expect(page).to have_content(user.username)
