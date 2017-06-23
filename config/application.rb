@@ -23,6 +23,6 @@ module GoalApp
         :routing_specs => false,
         :controller_specs => true,
         :request_specs => false
-    end    
+    end
   end
 end
