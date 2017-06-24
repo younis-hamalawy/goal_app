@@ -8,6 +8,8 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
+  Welcome, <%= current_user.username if logged_in? %> to the site!
+
   <body>
     <%= yield %>
   </body>

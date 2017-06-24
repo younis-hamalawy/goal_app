@@ -1,1 +1,11 @@
-<h1>New User!</h1>
+<h1>Sign Up</h1>
+
+<form action="<%= users_url %>" method="post">
+  <label for="username">Username</label>
+  <input id="username" type="text" name="user[username]" value="">
+
+  <label for="username">Password</label>
+  <input id="password" type="text" name="user[password]" value="">
+
+  <input type="submit" name="" value="Sign Up">
+</form>
